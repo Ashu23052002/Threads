@@ -1,0 +1,15 @@
+dotenv.config() - to read content of .env file
+
+
+req.params - allows you to capture dynamic values from the URL path.
+such as id from url
+
+protectRoute - to check authorization 
+
+pull operation in mongodb to delete a object from array
+
+id we get from params is string but the user._id is an object so convert to string
+
+focalculating likes we makes likes in model as an array of id who liked the message -> size of array no of likes
+
+used "recoil" for declear a global state provided by meta
