@@ -12,4 +12,8 @@ id we get from params is string but the user._id is an object so convert to stri
 
 focalculating likes we makes likes in model as an array of id who liked the message -> size of array no of likes
 
-used "recoil" for declear a global state provided by meta
+used "recoil" for declear a global state provided by meta - state management libraray
+
+change in vite.config.js  to connect backend to frontend
+
+for changing user we used setUser which is declear using useSetRecoilState every time
