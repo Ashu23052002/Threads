@@ -17,3 +17,7 @@ used "recoil" for declear a global state provided by meta - state management lib
 change in vite.config.js  to connect backend to frontend
 
 for changing user we used setUser which is declear using useSetRecoilState every time
+
+how to rtake file as an input - using useRef
+
+use of cloudinary

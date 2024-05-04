@@ -3,6 +3,7 @@ import React from "react";
 import useShowToast from "../hooks/useShowToast";
 import { useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
+import { LuLogOut } from "react-icons/lu";
 
 const LogoutButton = () => {
   const showToast = useShowToast();
@@ -29,7 +30,7 @@ const LogoutButton = () => {
       localStorage.removeItem("user-threads");
       setUser(null);
     } catch (error) {
-        showToast("Error", error, "error");
+      showToast("Error", error, "error");
     }
   };
   return (
@@ -40,7 +41,7 @@ const LogoutButton = () => {
       size={"sm"}
       onClick={handleLogout}
     >
-      Logout
+      <LuLogOut />
     </Button>
   );
 };
