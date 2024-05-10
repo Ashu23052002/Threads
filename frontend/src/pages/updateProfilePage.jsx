@@ -19,6 +19,7 @@ import useShowToast from "../hooks/useShowToast.js";
 
 export default function UpdateProfilePage() {
   const [user, setUser] = useRecoilState(userAtom);
+  const [updating, setUpdating] = useState(false);
 
   const [input, setInput] = useState({
     name: user.name,
@@ -36,6 +37,11 @@ export default function UpdateProfilePage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (updating) return;
+    setUpdating(true);
+
+    console.log(user.bio);
+
     try {
       const res = await fetch(`/api/users/update/${user._id}`, {
         method: "PUT",
@@ -47,14 +53,17 @@ export default function UpdateProfilePage() {
 
       const data = await res.json();
       if (data.error) {
-        showToast("Error", data.message, "error");
+        showToast("Error", data.error, "error");
         return;
       }
       showToast("Suucess", "Profile Updated Successfully", "success");
       setUser(data);
-      localStorage.setItem("user-threads", JSON.stringify(data)); 
+      localStorage.setItem("user-threads", JSON.stringify(data));
     } catch (error) {
       showToast("Error", error, "error");
+     }
+    finally {
+      setUpdating(false);
     }
   };
   return (
@@ -73,7 +82,7 @@ export default function UpdateProfilePage() {
           <Heading lineHeight={1.1} fontSize={{ base: "2xl", sm: "3xl" }}>
             User Profile Edit
           </Heading>
-          <FormControl id="userName">
+          <FormControl >
             <Stack direction={["column", "row"]} spacing={6}>
               <Center>
                 <Avatar size="xl" src={image || user.profilePic}></Avatar>
@@ -111,7 +120,7 @@ export default function UpdateProfilePage() {
               onChange={(e) => setInput({ ...input, username: e.target.value })}
             />
           </FormControl>
-          <FormControl id="email">
+          <FormControl >
             <FormLabel>Email address</FormLabel>
             <Input
               placeholder="your-email@example.com"
@@ -131,7 +140,7 @@ export default function UpdateProfilePage() {
               onChange={(e) => setInput({ ...input, bio: e.target.value })}
             />
           </FormControl>
-          <FormControl id="password">
+          <FormControl >
             <FormLabel>Password</FormLabel>
             <Input
               placeholder="password"
@@ -160,6 +169,7 @@ export default function UpdateProfilePage() {
                 bg: "green.500",
               }}
               type="submit"
+              isLoading={updating}
             >
               Submit
             </Button>

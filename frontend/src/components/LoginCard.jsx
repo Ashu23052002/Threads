@@ -25,6 +25,7 @@ export default function LoginCard() {
   const [showPassword, setShowPassword] = useState(false);
   const setAuthScreen = useSetRecoilState(authScreenAtom);
   const setUser = useSetRecoilState(userAtom);
+  const [loading,setLoading] = useState(false);
 
   const showToast = useShowToast();
 
@@ -34,6 +35,7 @@ export default function LoginCard() {
   });
   const handleLogin = async (req, res) => {
     console.log(inputs);
+    setLoading(true)
     try {
       const res = await fetch("/api/users/login", {
         method: "POST",
@@ -54,6 +56,8 @@ export default function LoginCard() {
       setUser(data);
     } catch (error) {
       showToast("Error", error, "error");
+    }finally{
+      setLoading(false)
     }
   };
 
@@ -85,10 +89,11 @@ export default function LoginCard() {
               <FormLabel>Username</FormLabel>
               <Input
                 type="text"
+                value={inputs.username}
                 onChange={(e) => {
                   setInputs({ ...inputs, username: e.target.value });
                 }}
-                value={inputs.username}
+                
               />
             </FormControl>
             <FormControl isRequired>
@@ -96,10 +101,11 @@ export default function LoginCard() {
               <InputGroup>
                 <Input
                   type={showPassword ? "text" : "password"}
+                  value={inputs.password}
                   onChange={(e) => {
                     setInputs({ ...inputs, password: e.target.value });
                   }}
-                  value={inputs.password}
+                 
                 />
                 <InputRightElement h={"full"}>
                   <Button
@@ -123,6 +129,7 @@ export default function LoginCard() {
                   bg: useColorModeValue("gray.700", "gray.800"),
                 }}
                 onClick={handleLogin}
+                isLoading={loading}
               >
                 Login
               </Button>

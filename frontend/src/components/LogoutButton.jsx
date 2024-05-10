@@ -36,7 +36,7 @@ const LogoutButton = () => {
   return (
     <Button
       position={"fixed"}
-      top={"10px"}
+      top={"20px"}
       right={"30px"}
       size={"sm"}
       onClick={handleLogout}

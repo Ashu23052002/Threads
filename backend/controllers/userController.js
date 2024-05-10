@@ -109,7 +109,8 @@ const followUnFollowUser = async (req, res) => {
     const { id } = req.params; // dynamic id url se get huwa
     const userToModify = await User.findById(id);
     const currentUser = await User.findById(req.user._id);
-
+     
+    console.log(id);
     if (id === req.user._id.toString())
       return res
         .status(400)
@@ -142,15 +143,21 @@ const updateUser = async (req, res) => {
   const { name, email, password, username, bio } = req.body;
   let { profilePic } = req.body;
   const userId = req.user._id;
+ // const {id} = req.params;
 
   try {
     let user = await User.findById(userId);
     if (!user) return res.status(400).json({ error: "User not found" });
 
-    if (req.params.id !== userId.toString())
-      return res
-        .status(400)
-        .json({ error: "You cannot update other people profile" });
+    console.log(req.params.id);
+    console.log(userId.toString());
+
+
+
+    // if (id !== userId.toString())
+    //   return res
+    //     .status(400)
+    //     .json({ error: "You cannot update other people profile" });
 
     if (password) {
       const salt = await bcrypt.genSalt(10);

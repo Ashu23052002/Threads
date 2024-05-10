@@ -22,7 +22,7 @@ function usePreviewImg() {
     }
   };
 
-  return {handleImageChange, image}
+  return {handleImageChange, image, setImage}
 }
 
 export default usePreviewImg;
