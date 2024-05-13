@@ -2,13 +2,27 @@ import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import generateTokenAndSetCookie from "../utils/helper/generateTokenAndSetCookie.js";
 import { v2 as cloudinary } from "cloudinary";
+import mongoose from "mongoose";
 
 const getUserProfile = async (req, res) => {
-  const { username } = req.params;
+  // username yaa  userId
+
+  const { query } = req.params;
+
   try {
-    const user = await User.findOne({ username })
-      .select("-password")
-      .select("-updatedAt");
+    let user;
+
+    // if user is userid
+    if (mongoose.Types.ObjectId.isValid(query)) {
+      user = await User.findOne({ _id: query })
+        .select("-password")
+        .select("-updatedAt");
+    } else {
+      // user is username
+      user = await User.findOne({ username:query })
+        .select("-password")
+        .select("-updatedAt");
+    }
 
     if (!user) {
       return res.status(400).json({
@@ -109,7 +123,7 @@ const followUnFollowUser = async (req, res) => {
     const { id } = req.params; // dynamic id url se get huwa
     const userToModify = await User.findById(id);
     const currentUser = await User.findById(req.user._id);
-     
+
     console.log(id);
     if (id === req.user._id.toString())
       return res
@@ -143,7 +157,7 @@ const updateUser = async (req, res) => {
   const { name, email, password, username, bio } = req.body;
   let { profilePic } = req.body;
   const userId = req.user._id;
- // const {id} = req.params;
+  // const {id} = req.params;
 
   try {
     let user = await User.findById(userId);
@@ -151,8 +165,6 @@ const updateUser = async (req, res) => {
 
     console.log(req.params.id);
     console.log(userId.toString());
-
-
 
     // if (id !== userId.toString())
     //   return res

@@ -23,3 +23,7 @@ how to rtake file as an input - using useRef
 use of cloudinary
 
 due to React.StrictMode it shows 2 or 3 times in console
+
+it is using useEffect in Homepage when using getFeedPost
+
+to find difference in date us date-fns
