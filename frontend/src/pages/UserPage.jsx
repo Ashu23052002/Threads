@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import UserHeader from "../components/UserHeader.jsx";
 import UserPost from "../components/UserPost.jsx";
+import Post from "../components/Post.jsx";
 import { useParams } from "react-router-dom";
 import useShowToast from "../hooks/useShowToast.js";
 import { Spinner } from "@chakra-ui/react";
@@ -11,6 +12,8 @@ const UserPage = () => {
   const { username } = useParams();
   const showToast = useShowToast();
   const [loading, setLoading] = useState(true);
+  const [posts, setPosts] = useState([]);
+  const [fetchingPosts, setFetchingPosts] = useState(false);
 
   useEffect(() => {
     const getUser = async () => {
@@ -29,8 +32,28 @@ const UserPage = () => {
       }
     };
 
+    const getPosts = async () => {
+      setFetchingPosts(true);
+      try {
+        const res = await fetch(`/api/posts/user/${username}`);
+        const data = await res.json();
+      //  console.log("Fetched posts data:", data);
+        setPosts(data);
+      } catch (error) {
+        showToast("Error", error, "error");
+        setPosts([]);
+      } finally {
+        setFetchingPosts(false);
+      }
+    };
+
     getUser();
+    getPosts();
   }, [username]);
+
+  useEffect(() => {
+  //  console.log("Updated posts:", posts);
+  }, [posts]);
 
   if (!user && loading) {
     return (
@@ -45,25 +68,18 @@ const UserPage = () => {
   return (
     <>
       <UserHeader user={user} />
-      <UserPost
-        likes={613}
-        replies={176}
-        postImg="/post1.png"
-        postTitle="How r u ?"
-      />
-      <UserPost
-        likes={987}
-        replies={356}
-        postImg="/post2.png"
-        postTitle="How r u ?"
-      />
-      <UserPost
-        likes={783}
-        replies={479}
-        postImg="/post3.png"
-        postTitle="How r u ?"
-      />
-      <UserPost likes={243} replies={190} postTitle="How r u ?" />
+
+      {!fetchingPosts && posts.length === 0 && <h1>User has no Post.</h1>}
+
+      {fetchingPosts && (
+        <Flex justifyContent="center" marginTop={20}>
+          <Spinner size="xl" />
+        </Flex>
+      )}
+
+      {posts.map((post) => (
+        <Post key={post._id} post={post} postedBy={post.postedBy} />
+      ))}
     </>
   );
 };

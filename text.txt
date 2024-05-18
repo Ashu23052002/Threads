@@ -27,3 +27,10 @@ due to React.StrictMode it shows 2 or 3 times in console
 it is using useEffect in Homepage when using getFeedPost
 
 to find difference in date us date-fns
+import {formatDistanceToNow} from "date-fns" ===>>>  {formatDistanceToNow(new Date(post.createdAt))} ago
+
+ const [isLiking, setIsLiking] = useState(false); in action -->> agar ham jab like button dabae tabhi button wapas daba bhi function run huwe to usko prevent karne ke liye
+ 
+ delete post of our own 
+
+ ui me update nahi ho raha delete karne ke baad bhi refesh karna padta hai -->> usko end me bataye ga

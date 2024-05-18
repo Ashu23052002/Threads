@@ -33,7 +33,7 @@ export default function LoginCard() {
     username: "",
     password: "",
   });
-  const handleLogin = async (req, res) => {
+  const handleLogin = async () => {
     console.log(inputs);
     setLoading(true)
     try {
